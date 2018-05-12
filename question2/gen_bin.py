@@ -3,9 +3,13 @@ from math import factorial
 def main():
     n = 5
     k = 3
-    #print gen_bin(5, 3)  
+    print "a) 5C3"
+    print gen_bin(5, 3)  
     #gen_pascal(5)
+    print "b) print first 5 lines of Pascal's triangle"
     gen_pascal2(5)
+    print "c) p=0.25, n=4, k=1"
+    get_probability(0.25, 4, 1)
 
 def gen_bin(n, k):
     if k == 0:
@@ -28,8 +32,6 @@ def gen_pascal2(n_lines):
         for e in xrange(line+1):
             print(gen_bin(line, e))
        
-    
-
 def gen_pascal(n_lines):
     triangle = [[] for line in xrange(n_lines)]
 
@@ -48,6 +50,9 @@ def gen_pascal(n_lines):
             print triangle[l][e] 
         
         #print "\n"
+
+def get_probability(p, n, k):
+    print "Probability is ",  gen_bin(n, k)*(p**k)*((1-p)**(n-k))
 
 if __name__ == "__main__":
     main()
