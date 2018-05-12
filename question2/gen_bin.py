@@ -1,4 +1,7 @@
 from math import factorial
+import random
+import numpy as np
+import matplotlib.pyplot as plot
 
 def main():
     n = 5
@@ -10,6 +13,7 @@ def main():
     gen_pascal2(5)
     print "c) p=0.25, n=4, k=1"
     get_probability(0.25, 4, 1)
+    simulate(0.7)
 
 def gen_bin(n, k):
     if k == 0:
@@ -53,6 +57,46 @@ def gen_pascal(n_lines):
 
 def get_probability(p, n, k):
     print "Probability is ",  gen_bin(n, k)*(p**k)*((1-p)**(n-k))
+
+def flip(n, p):
+    if p > 1:
+        print "Invalid probability"
+        return
+    flips = [1 if random.random() <= p else 0 for i in xrange(n)]
+    print len(flips)
+    #print flips
+    return [flips.count(1), flips.count(0)]
+    
+def simulate(p):
+    flip_10 = flip(10, p)
+    heads_10 = flip_10[0]
+    tails_10 = flip_10[1]
+    success_10 = float(flip_10[0])/10
+
+    flip_100 = flip(100, p)
+    heads_10 = flip_10[0]
+    tails_10 = flip_10[1]
+    success_100 = float(flip_100[0])/100
+    
+    flip_1000 = flip(1000, p)
+    heads_10 = flip_10[0]
+    tails_10 = flip_10[1]
+    success_1000 = float(flip_1000[0])/1000
+
+    print flip_10
+    print flip_100
+    print flip_1000
+    
+    #print 10_heads, 10_tails
+    
+    x = np.arange(3)
+    plot.bar(x, height=[success_10, success_100, success_1000])
+    plot.bar(x, color="r", height=[1-success_10, 1-success_100, 1-success_1000], bottom=[success_10, success_100, success_1000])
+    plot.xticks([],['10','100','1000'])
+    plot.ylabel("Probability of Landing Heads")
+    plot.title("d) Percentage of Heads for 10, 100 and 1000 Trials")
+    plot.show()
+    
 
 if __name__ == "__main__":
     main()
