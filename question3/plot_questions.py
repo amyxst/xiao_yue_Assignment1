@@ -13,8 +13,10 @@ def main():
     #plot_bessel()
 
     # Part b)
-    #print point_spread_x(0.3)
-    plot_point_spread()
+    #print point_spread_x(np.linspace(-1,1), 0.3)
+    #print point_spread_x(-1, 0.3)
+    #plot_point_spread()
+    show_point_spread_img()
 
 def bessel(m, x):
     f = lambda theta: math.cos(m*theta - x*math.sin(theta))
@@ -35,16 +37,15 @@ def plot_bessel(m_range=[0,5], x_range=[-10,10]):
     plt.ylabel("$J_m(x)$")
     plt.show()
 
-def point_spread_x(q, a=0.1, lmda=0.1, R=0.7):
+def ps_x(q, a=0.1, lmda=0.1, R=0.7):
     return (2*math.pi*a*q)/(lmda*R)
 
 def point_spread(q, Inaut=40):
-    x = point_spread_x(q)
+    x = ps_x(q)
     return Inaut*((2*bessel(1,x))/x)**2
 
 def plot_point_spread():
     q = np.linspace(-0.3, 0.3, 300)
-    ps_x = np.vectorize(point_spread_x)
     ps_y = np.vectorize(point_spread)
 
     x = ps_x(q)
@@ -57,5 +58,22 @@ def plot_point_spread():
     plt.plot(x, y)
     plt.show()
 
+def show_point_spread_img():
+    q = np.linspace(-0.3, 0.3, 300)
+    x = ps_x(q)
+ 
+    xv, yv = np.meshgrid(x, x)
+
+    # combine xv, yv and convert to positive values
+    grid = xv**2 + yv**2
+
+    ps_vec = np.vectorize(point_spread)
+    grid_ps = ps_vec(grid)
+
+    plt.figure()
+    plt.title("b) Point Spread Function Rendering")
+    plt.imshow(np.sqrt(grid_ps), cmap='binary', extent=(-0.3, 0.3, -0.3, 0.3))
+    plt.show()    
+    
 if __name__ == "__main__":
     main()
