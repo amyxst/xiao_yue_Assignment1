@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 def main():
     # Part a)
-    print("a) Implementing Bessel function of the first kind of order, x=4")
-    print "Implemented routine result: ", bessel(1,4) 
-    print "Scipy result: ", jv(1,4)
+    #print("a) Implementing Bessel function of the first kind of order, x=4")
+    #print "Implemented routine result: ", bessel(1,4) 
+    #print "Scipy result: ", jv(1,4)
     
     #plot_bessel()
 
@@ -16,7 +16,10 @@ def main():
     #print point_spread_x(np.linspace(-1,1), 0.3)
     #print point_spread_x(-1, 0.3)
     #plot_point_spread()
-    show_point_spread_img()
+    #show_point_spread_img()
+
+    # Part c)
+    convolve_img("proxima_centauri.jpg")
 
 def bessel(m, x):
     f = lambda theta: math.cos(m*theta - x*math.sin(theta))
@@ -58,22 +61,25 @@ def plot_point_spread():
     plt.plot(x, y)
     plt.show()
 
-def show_point_spread_img():
+def point_spread_img_vals():
     q = np.linspace(-0.3, 0.3, 300)
     x = ps_x(q)
- 
+
     xv, yv = np.meshgrid(x, x)
 
     # combine xv, yv and convert to positive values
     grid = xv**2 + yv**2
 
     ps_vec = np.vectorize(point_spread)
-    grid_ps = ps_vec(grid)
+    return ps_vec(grid)
+
+def show_point_spread_img():
+    img_vals = point_spread_img_vals()
 
     plt.figure()
     plt.title("b) Point Spread Function Rendering")
-    plt.imshow(np.sqrt(grid_ps), cmap='binary', extent=(-0.3, 0.3, -0.3, 0.3))
+    plt.imshow(np.sqrt(img_vals), cmap='binary', extent=(-0.3, 0.3, -0.3, 0.3))
     plt.show()    
-    
+
 if __name__ == "__main__":
     main()
