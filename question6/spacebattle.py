@@ -17,9 +17,8 @@ class Ship(object):
         if self.destroyed is True:
             return "Ship {0} is destroyed. :(\n".format(self.name)
         else:
-            return "Ship {} statistics:\nLaser power: {}\nShield strength: {}\nHull strength: {}\n".format(
+            return "Ship {} statistics:\nShield strength: {}\nHull strength: {}\n".format(
                        self.name,
-                       self.laser_power,
                        self.shield_strength,
                        self.hull_strength)
 
@@ -87,13 +86,39 @@ class Speeder(Ship):
         else:
             super(Speeder, self)._is_shot(src_ship)        
 
-"""
-def init_game():
+def init_game(ships):
+    if len(ships) < 2:
+        print "Insufficient number of ships to start a game."
+
+    def pick_ship(ships):
+        return int(round(random.uniform(len(ships)-1,0)))
+        
     #Initiates and monitors game status.
-    ships = [Warship(), Speeder()
-"""
+    print "===\nStarting Diagnostics\n==="
+    for ship in ships:
+        print ship
+    print "==="
+
+    gameover = False
+
+    while not gameover:
+        target = ships[pick_ship(ships)]
+        attacker = ships[pick_ship(ships)]
+
+        if target is not attacker:
+            attacker.shoot(target)
+            if target.destroyed:
+                ships.remove(target)
+        
+            if len(ships) == 1:
+                gameover = True
+
+    print "Ship {} has won the battle!\n\nGameover".format(ships[0].name)
 
 if __name__ == "__main__":
+    ships = [Ship("Ol' A"), Ship("Ol' B"), Ship("Ol' C"), Warship("Warzo"), Speeder("Evader")]
+    init_game(ships)
+    """
     aship = Ship("bob")
     bship = Speeder("mary")
     cship = Warship("diego")
@@ -110,3 +135,4 @@ if __name__ == "__main__":
           for target in ships:
               if attacker is not target:
                   attacker.shoot(target)
+    """
