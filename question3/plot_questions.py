@@ -19,7 +19,7 @@ def main():
     #show_point_spread_img()
 
     # Part c)
-    convolve_img("proxima_centauri.jpg")
+    #convolve_img("proxima_centauri.jpg")
 
 def bessel(m, x):
     f = lambda theta: math.cos(m*theta - x*math.sin(theta))
