@@ -1,4 +1,6 @@
-class Ship:
+import random
+
+class Ship(object):
     def __init__(
             self,
             name,
@@ -13,7 +15,7 @@ class Ship:
    
     def __str__(self):
         if self.destroyed is True:
-            return "Ship {0} is destroyed. :(".format(self.name)
+            return "Ship {0} is destroyed. :(\n".format(self.name)
         else:
             return "Ship {} statistics:\nLaser power: {}\nShield strength: {}\nHull strength: {}\n".format(
                        self.name,
@@ -22,28 +24,89 @@ class Ship:
                        self.hull_strength)
 
     def shoot(self, target):
-        print "Ship {} launched a shot at ship {}!".format(self.name, target.name)
-        #scenarios: remaining shield strength, no shield strength, hull strength, ship destroyed
-    
-        if target.shield_strength != 0 \
-            and (target.shield_strength - self.laser_power) <= 0:
-            remaining_laser = self.laser_power - target.shield_strength
-            target.shield_strength = 0
+        print "Ship {} launched a shot of power {} at Ship {}!".format(self.name, self.laser_power, target.name)
+        target._is_shot(self)
 
-            target.hull_strength -= remaining_laser
-            target.destroyed = True if target.hull_strength <= 0 else False
+    def _is_shot(self, src_ship, src_power=None):
+        """
+        scenarios:
+        a) remaining shield strength
+        b) no shield strength but hull strength
+        c) ship destroyed
+        """
+        if src_ship is self:
+            print "A ship cannot attack itself...!\n"
+            return
+
+        attack_power = src_power if src_power is not None else src_ship.laser_power
+
+        if self.destroyed is True:
+            pass
+        elif self.shield_strength != 0:
+            original_shield = self.shield_strength
+
+            if (self.shield_strength - attack_power) <= 0:
+                remaining_laser = attack_power - self.shield_strength
+                self.shield_strength = 0
+                
+                self.hull_strength -= remaining_laser
+                self.destroyed = True if self.hull_strength <= 0 else False
+            else:
+                self.shield_strength -= attack_power
+
+        elif self.shield_strength == 0 and self.hull_strength != 0:
+            remaining_laser = attack_power / 2
+            if (self.hull_strength - remaining_laser) <= 0:
+                self.hull_strength = 0
+                self.destroyed = True
+            else:
+                self.hull_strength -= remaining_laser
+
+        print self
 
 class Warship(Ship):
     def __init__(self, name):
         Ship.__init__(self, name)
         self.hp_laser_power = 50
 
+    def shoot(self, target):
+        if random.random() <= 0.3:
+            print "Ship {} has charged its laser! Ship {} launched an extra big blast of power {} towards ship {}!\n".format(self.name, self.name, self.hp_laser_power, target.name)
+
+            target._is_shot(self, self.hp_laser_power)
+        else: 
+            super(Warship, self).shoot(target)
+
+class Speeder(Ship):
+    def __init__(self, name):
+        Ship.__init__(self, name)
+
+    def _is_shot(self, src_ship, src_power=None):
+        if random.random() <= 0.5: # evades laser 50% of the time
+            print "Ship {} evaded laser from {}!\n".format(self.name, src_ship.name)
+        else:
+            super(Speeder, self)._is_shot(src_ship)        
+
+"""
+def init_game():
+    #Initiates and monitors game status.
+    ships = [Warship(), Speeder()
+"""
 
 if __name__ == "__main__":
     aship = Ship("bob")
-    bship = Ship("mary")
-    print aship
-    print bship
+    bship = Speeder("mary")
+    cship = Warship("diego")
 
-    aship.shoot(bship)
-    print bship
+    ships = [aship, bship, cship]
+
+    print "===\nStarting Diagnostics\n==="
+    for ship in ships:
+        print ship
+    print "==="
+
+    for i in xrange(2):
+       for attacker in ships:
+          for target in ships:
+              if attacker is not target:
+                  attacker.shoot(target)

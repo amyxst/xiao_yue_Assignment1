@@ -1,12 +1,12 @@
 import numpy as np
-from scipy import misc
+import scipy
 from scipy.signal import fftconvolve
 import matplotlib.pyplot as plt
 
 from plot_questions import point_spread_img_vals
 
 def convolve_img(fname):
-    img = misc.imread(fname)
+    img = scipy.misc.imread(fname)
     #print img.shape
 
     plt.figure()
