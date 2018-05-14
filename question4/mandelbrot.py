@@ -30,10 +30,10 @@ def show_mandelbrot_set_img():
     mandelbrot_vec = np.vectorize(mandelbrot_set)
     grid = mandelbrot_vec(grid)
     #print grid.shape
-    print grid[0]
 
     plt.figure()
-    plt.imshow(grid)
+    plt.title("4. Sample Mandelbrot Plot")
+    plt.imshow(grid, cmap="bwr", vmin=-100, vmax=200)
     plt.show()
     
 if __name__ == "__main__":
