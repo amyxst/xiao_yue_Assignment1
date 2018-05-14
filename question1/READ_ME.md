@@ -1,6 +1,6 @@
 ## Instructions:
 
-`./name [find] [replace]`
+Usage: `./name [find] [replace]`
 
 Demo:
 `./name a goodbye`

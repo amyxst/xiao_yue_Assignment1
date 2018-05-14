@@ -9,10 +9,11 @@ def main():
     print "a) 5C3"
     print gen_bin(5, 3)  
     #gen_pascal(5)
-    print "b) print first 5 lines of Pascal's triangle"
+    print "\nb) print first 5 lines of Pascal's triangle"
     gen_pascal2(5)
-    print "c) p=0.25, n=4, k=1"
+    print "\nc) p=0.25, n=4, k=1"
     get_probability(0.25, 4, 1)
+    print "\nd) simulating trials, p=0.7 for heads"
     simulate(0.7)
 
 def gen_bin(n, k):
@@ -63,31 +64,23 @@ def flip(n, p):
         print "Invalid probability"
         return
     flips = [1 if random.random() <= p else 0 for i in xrange(n)]
-    print len(flips)
+    #print len(flips)
     #print flips
     return [flips.count(1), flips.count(0)]
     
 def simulate(p):
     flip_10 = flip(10, p)
-    heads_10 = flip_10[0]
-    tails_10 = flip_10[1]
     success_10 = float(flip_10[0])/10
 
     flip_100 = flip(100, p)
-    heads_10 = flip_10[0]
-    tails_10 = flip_10[1]
     success_100 = float(flip_100[0])/100
     
     flip_1000 = flip(1000, p)
-    heads_10 = flip_10[0]
-    tails_10 = flip_10[1]
     success_1000 = float(flip_1000[0])/1000
 
-    print flip_10
-    print flip_100
-    print flip_1000
-    
-    #print 10_heads, 10_tails
+    print "10 flips | Heads: {}, Tails: {}".format(flip_10[0], flip_10[1])
+    print "100 flips | Heads: {}, Tails: {}".format(flip_100[0], flip_100[1])
+    print "1000 flips | Heads: {}, Tails: {}".format(flip_1000[0], flip_1000[1])
     
     x = np.arange(3)
     plot.bar(x, height=[success_10, success_100, success_1000])
@@ -96,7 +89,6 @@ def simulate(p):
     plot.ylabel("Probability of Landing Heads")
     plot.title("d) Percentage of Heads for 10, 100 and 1000 Trials")
     plot.show()
-    
 
 if __name__ == "__main__":
     main()

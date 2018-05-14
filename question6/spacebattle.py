@@ -96,7 +96,7 @@ def init_game(ships):
     #Initiates and monitors game status.
     print "===\nStarting Diagnostics\n==="
     for ship in ships:
-        print ship
+        print ship.name
     print "==="
 
     gameover = False
@@ -118,21 +118,3 @@ def init_game(ships):
 if __name__ == "__main__":
     ships = [Ship("Ol' A"), Ship("Ol' B"), Ship("Ol' C"), Warship("Warzo"), Speeder("Evader")]
     init_game(ships)
-    """
-    aship = Ship("bob")
-    bship = Speeder("mary")
-    cship = Warship("diego")
-
-    ships = [aship, bship, cship]
-
-    print "===\nStarting Diagnostics\n==="
-    for ship in ships:
-        print ship
-    print "==="
-
-    for i in xrange(2):
-       for attacker in ships:
-          for target in ships:
-              if attacker is not target:
-                  attacker.shoot(target)
-    """
